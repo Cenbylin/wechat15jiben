@@ -1,0 +1,4 @@
+Temp
+
+url:
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2e7d71280147d5a5&redirect_uri=http%3A%2F%2Fwww.cenbylin.cn%2Fwechat%2Fget.jsp&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect
