@@ -3,42 +3,42 @@ package net.binjoo.utils;
 public class SHA1 {
 	private final int[] abcde = { 0x67452301, 0xefcdab89, 0x98badcfe,
 			0x10325476, 0xc3d2e1f0 };
-	// ÕªÒªÊı¾İ´æ´¢Êı×é
+	// æ‘˜è¦æ•°æ®å­˜å‚¨æ•°ç»„
 	private int[] digestInt = new int[5];
-	// ¼ÆËã¹ı³ÌÖĞµÄÁÙÊ±Êı¾İ´æ´¢Êı×é
+	// è®¡ç®—è¿‡ç¨‹ä¸­çš„ä¸´æ—¶æ•°æ®å­˜å‚¨æ•°ç»„
 	private int[] tmpData = new int[80];
 
-	// ¼ÆËãsha-1ÕªÒª
+	// è®¡ç®—sha-1æ‘˜è¦
 	private int process_input_bytes(byte[] bytedata) {
-		// ³õÊÔ»¯³£Á¿
+		// åˆè¯•åŒ–å¸¸é‡
 		System.arraycopy(abcde, 0, digestInt, 0, abcde.length);
-		// ¸ñÊ½»¯ÊäÈë×Ö½ÚÊı×é£¬²¹10¼°³¤¶ÈÊı¾İ
+		// æ ¼å¼åŒ–è¾“å…¥å­—èŠ‚æ•°ç»„ï¼Œè¡¥10åŠé•¿åº¦æ•°æ®
 		byte[] newbyte = byteArrayFormatData(bytedata);
-		// »ñÈ¡Êı¾İÕªÒª¼ÆËãµÄÊı¾İµ¥Ôª¸öÊı
+		// è·å–æ•°æ®æ‘˜è¦è®¡ç®—çš„æ•°æ®å•å…ƒä¸ªæ•°
 		int MCount = newbyte.length / 64;
-		// Ñ­»·¶ÔÃ¿¸öÊı¾İµ¥Ôª½øĞĞÕªÒª¼ÆËã
+		// å¾ªç¯å¯¹æ¯ä¸ªæ•°æ®å•å…ƒè¿›è¡Œæ‘˜è¦è®¡ç®—
 		for (int pos = 0; pos < MCount; pos++) {
-			// ½«Ã¿¸öµ¥ÔªµÄÊı¾İ×ª»»³É16¸öÕûĞÍÊı¾İ£¬²¢±£´æµ½tmpDataµÄÇ°16¸öÊı×éÔªËØÖĞ
+			// å°†æ¯ä¸ªå•å…ƒçš„æ•°æ®è½¬æ¢æˆ16ä¸ªæ•´å‹æ•°æ®ï¼Œå¹¶ä¿å­˜åˆ°tmpDataçš„å‰16ä¸ªæ•°ç»„å…ƒç´ ä¸­
 			for (int j = 0; j < 16; j++) {
 				tmpData[j] = byteArrayToInt(newbyte, (pos * 64) + (j * 4));
 			}
-			// ÕªÒª¼ÆËãº¯Êı
+			// æ‘˜è¦è®¡ç®—å‡½æ•°
 			encrypt();
 		}
 		return 20;
 	}
 
-	// ¸ñÊ½»¯ÊäÈë×Ö½ÚÊı×é¸ñÊ½
+	// æ ¼å¼åŒ–è¾“å…¥å­—èŠ‚æ•°ç»„æ ¼å¼
 	private byte[] byteArrayFormatData(byte[] bytedata) {
-		// ²¹0ÊıÁ¿
+		// è¡¥0æ•°é‡
 		int zeros = 0;
-		// ²¹Î»ºó×ÜÎ»Êı
+		// è¡¥ä½åæ€»ä½æ•°
 		int size = 0;
-		// Ô­Ê¼Êı¾İ³¤¶È
+		// åŸå§‹æ•°æ®é•¿åº¦
 		int n = bytedata.length;
-		// Ä£64ºóµÄÊ£ÓàÎ»Êı
+		// æ¨¡64åçš„å‰©ä½™ä½æ•°
 		int m = n % 64;
-		// ¼ÆËãÌí¼Ó0µÄ¸öÊıÒÔ¼°Ìí¼Ó10ºóµÄ×Ü³¤¶È
+		// è®¡ç®—æ·»åŠ 0çš„ä¸ªæ•°ä»¥åŠæ·»åŠ 10åçš„æ€»é•¿åº¦
 		if (m < 56) {
 			zeros = 55 - m;
 			size = n - m + 64;
@@ -49,19 +49,19 @@ public class SHA1 {
 			zeros = 63 - m + 56;
 			size = (n + 64) - m + 64;
 		}
-		// ²¹Î»ºóÉú³ÉµÄĞÂÊı×éÄÚÈİ
+		// è¡¥ä½åç”Ÿæˆçš„æ–°æ•°ç»„å†…å®¹
 		byte[] newbyte = new byte[size];
-		// ¸´ÖÆÊı×éµÄÇ°Ãæ²¿·Ö
+		// å¤åˆ¶æ•°ç»„çš„å‰é¢éƒ¨åˆ†
 		System.arraycopy(bytedata, 0, newbyte, 0, n);
-		// »ñµÃÊı×éAppendÊı¾İÔªËØµÄÎ»ÖÃ
+		// è·å¾—æ•°ç»„Appendæ•°æ®å…ƒç´ çš„ä½ç½®
 		int l = n;
-		// ²¹1²Ù×÷
+		// è¡¥1æ“ä½œ
 		newbyte[l++] = (byte) 0x80;
-		// ²¹0²Ù×÷
+		// è¡¥0æ“ä½œ
 		for (int i = 0; i < zeros; i++) {
 			newbyte[l++] = (byte) 0x00;
 		}
-		// ¼ÆËãÊı¾İ³¤¶È£¬²¹Êı¾İ³¤¶ÈÎ»¹²8×Ö½Ú£¬³¤ÕûĞÍ
+		// è®¡ç®—æ•°æ®é•¿åº¦ï¼Œè¡¥æ•°æ®é•¿åº¦ä½å…±8å­—èŠ‚ï¼Œé•¿æ•´å‹
 		long N = (long) n * 8;
 		byte h8 = (byte) (N & 0xFF);
 		byte h7 = (byte) ((N >> 8) & 0xFF);
@@ -98,7 +98,7 @@ public class SHA1 {
 		return (x << y) | x >>> (32 - y);
 	}
 
-	// µ¥ÔªÕªÒª¼ÆËãº¯Êı
+	// å•å…ƒæ‘˜è¦è®¡ç®—å‡½æ•°
 	private void encrypt() {
 		for (int i = 16; i <= 79; i++) {
 			tmpData[i] = f4(tmpData[i - 3] ^ tmpData[i - 8] ^ tmpData[i - 14]
@@ -156,13 +156,13 @@ public class SHA1 {
 		}
 	}
 
-	// 4×Ö½ÚÊı×é×ª»»ÎªÕûÊı
+	// 4å­—èŠ‚æ•°ç»„è½¬æ¢ä¸ºæ•´æ•°
 	private int byteArrayToInt(byte[] bytedata, int i) {
 		return ((bytedata[i] & 0xff) << 24) | ((bytedata[i + 1] & 0xff) << 16)
 				| ((bytedata[i + 2] & 0xff) << 8) | (bytedata[i + 3] & 0xff);
 	}
 
-	// ÕûÊı×ª»»Îª4×Ö½ÚÊı×é
+	// æ•´æ•°è½¬æ¢ä¸º4å­—èŠ‚æ•°ç»„
 	private void intToByteArray(int intValue, byte[] byteData, int i) {
 		byteData[i] = (byte) (intValue >>> 24);
 		byteData[i + 1] = (byte) (intValue >>> 16);
@@ -170,7 +170,7 @@ public class SHA1 {
 		byteData[i + 3] = (byte) intValue;
 	}
 
-	// ½«×Ö½Ú×ª»»ÎªÊ®Áù½øÖÆ×Ö·û´®
+	// å°†å­—èŠ‚è½¬æ¢ä¸ºåå…­è¿›åˆ¶å­—ç¬¦ä¸²
 	private static String byteToHexString(byte ib) {
 		char[] Digit = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A',
 				'B', 'C', 'D', 'E', 'F' };
@@ -181,7 +181,7 @@ public class SHA1 {
 		return s;
 	}
 
-	// ½«×Ö½ÚÊı×é×ª»»ÎªÊ®Áù½øÖÆ×Ö·û´®
+	// å°†å­—èŠ‚æ•°ç»„è½¬æ¢ä¸ºåå…­è¿›åˆ¶å­—ç¬¦ä¸²
 	private static String byteArrayToHexString(byte[] bytearray) {
 		String strDigest = "";
 		for (int i = 0; i < bytearray.length; i++) {
@@ -190,7 +190,7 @@ public class SHA1 {
 		return strDigest;
 	}
 
-	// ¼ÆËãsha-1ÕªÒª£¬·µ»ØÏàÓ¦µÄ×Ö½ÚÊı×é
+	// è®¡ç®—sha-1æ‘˜è¦ï¼Œè¿”å›ç›¸åº”çš„å­—èŠ‚æ•°ç»„
 	public byte[] getDigestOfBytes(byte[] byteData) {
 		process_input_bytes(byteData);
 		byte[] digest = new byte[20];
@@ -200,7 +200,7 @@ public class SHA1 {
 		return digest;
 	}
 
-	// ¼ÆËãsha-1ÕªÒª£¬·µ»ØÏàÓ¦µÄÊ®Áù½øÖÆ×Ö·û´®
+	// è®¡ç®—sha-1æ‘˜è¦ï¼Œè¿”å›ç›¸åº”çš„åå…­è¿›åˆ¶å­—ç¬¦ä¸²
 	public String getDigestOfString(byte[] byteData) {
 		return byteArrayToHexString(getDigestOfBytes(byteData));
 	}

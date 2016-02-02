@@ -1,15 +1,18 @@
 package cn.cenbylin.entity;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import cn.cenbylin.jdbc.JDBC4wechat;
 import cn.cenbylin.tool.HttpRequestTool;
 import com.google.gson.*;
+
 /**
-´ËÀàÊÇ¶ÔÎ¢ĞÅ·ÃÎÊÓÃ»§µÄ·â×°£¬Ò»µ©³õÊ¼»¯£¬¸÷ÖÖĞÅÏ¢½«»á¶ÁÈ¡£¬²¢¸üĞÂÊı¾İ¿â¡£
-@author Cenbylin
-@version 1.0
-*/
+ * æ­¤ç±»æ˜¯å¯¹å¾®ä¿¡è®¿é—®ç”¨æˆ·çš„å°è£…ï¼Œä¸€æ—¦åˆå§‹åŒ–ï¼Œå„ç§ä¿¡æ¯å°†ä¼šè¯»å–ï¼Œå¹¶æ›´æ–°æ•°æ®åº“ã€‚
+ * 
+ * @author Cenbylin
+ * @version 1.0
+ */
 public class SpecificUser {
 	private final String inforurl = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
 	private String access_token = null;
@@ -20,66 +23,84 @@ public class SpecificUser {
 	private String city = null;
 	private String country = null;
 	private String headimgurl = null;
+
 	public String getNickname() {
 		return nickname;
 	}
+
 	public String getSex() {
 		return sex;
 	}
+
 	public String getProvince() {
 		return province;
 	}
+
 	public String getCity() {
 		return city;
 	}
+
 	public String getCountry() {
 		return country;
 	}
+
 	public String getHeadimgurl() {
 		return headimgurl;
 	}
-	public void init(String access_token,String openid){//³õÊ¼»¯º¯Êı
+
+	public void init(String access_token, String openid) {// åˆå§‹åŒ–å‡½æ•°
 		this.access_token = access_token;
 		this.openid = openid;
-		if(access_token!=null && openid!=null){
-			//»ñÈ¡ÓÃ»§ĞÅÏ¢Json£¬²¢½âÎö
-			String json = HttpRequestTool.sendGet(inforurl.replace("ACCESS_TOKEN", access_token).replace("OPENID", openid), "utf-8");
+		if (access_token != null && openid != null) {
+			// è·å–ç”¨æˆ·ä¿¡æ¯Jsonï¼Œå¹¶è§£æ
+			String json = HttpRequestTool.sendGet(
+					inforurl.replace("ACCESS_TOKEN", access_token).replace(
+							"OPENID", openid), "utf-8");
 			JsonParser parser = new JsonParser();
 			JsonObject object = (JsonObject) parser.parse(json);
-			//ÖğÒ»»ñÈ¡
+			// é€ä¸€è·å–
 			nickname = object.get("nickname").getAsString();
 			sex = object.get("sex").getAsString();
 			province = object.get("province").getAsString();
 			city = object.get("city").getAsString();
 			country = object.get("country").getAsString();
 			headimgurl = object.get("headimgurl").getAsString();
-			DBsynchronism();//¿ªÊ¼Í¬²½
+			DBsynchronism();// å¼€å§‹åŒæ­¥
 		}
 	}
-	public void init(String code){//ÖØÔØ£¬code·½Ê½»ñÈ¡
-		String url="https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx2e7d71280147d5a5&secret=bb54272fc561876a7c4f82d347f9c584&code=CODE&grant_type=authorization_code";
-		String json=HttpRequestTool.sendGet(url.replace("CODE", code), "utf-8");
-		JsonParser parser = new JsonParser();  
-	     	//µ÷ÓÃparse·½·¨»ñÈ¡µ½JsonObject  
-	    JsonObject object = (JsonObject) parser.parse(json);  
-	    	//µ÷ÓÃÒ»ÏµÁĞget·½·¨»ñÈ¡objectµÄÖ±½Ó×Ó¶ÔÏó  
-	    String access_token = object.get("access_token").getAsString();
-	    String openid = object.get("refresh_token").getAsString();
-	    init(access_token,openid);
+
+	public void init(String code) {// é‡è½½ï¼Œcodeæ–¹å¼è·å–
+		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx2e7d71280147d5a5&secret=bb54272fc561876a7c4f82d347f9c584&code=CODE&grant_type=authorization_code";
+		String json = HttpRequestTool.sendGet(url.replace("CODE", code),
+				"utf-8");
+		JsonParser parser = new JsonParser();
+		// è°ƒç”¨parseæ–¹æ³•è·å–åˆ°JsonObject
+		JsonObject object = (JsonObject) parser.parse(json);
+		// è°ƒç”¨ä¸€ç³»åˆ—getæ–¹æ³•è·å–objectçš„ç›´æ¥å­å¯¹è±¡
+		String access_token = object.get("access_token").getAsString();
+		String openid = object.get("refresh_token").getAsString();
+		init(access_token, openid);
 	}
-	public void DBsynchronism(){//DBÍ¬²½
-		try{
+
+	public void DBsynchronism() {// DBåŒæ­¥
+		try {
 			JDBC4wechat db = new JDBC4wechat();
-			//Èç¹û²»´æÔÚº¬¸ÃopenidµÄ¼ÇÂ¼£¬ÔòÌí¼Ó¼ÇÂ¼
-			db.doSqlUpdate("insert ignore into specificperson(openid,access_token)VALUES(opid,acstk);".replace("opid", openid).replace("acstk", access_token));
-		}catch(SQLException e){}
+			// å¦‚æœä¸å­˜åœ¨å«è¯¥openidçš„è®°å½•ï¼Œåˆ™æ·»åŠ è®°å½•
+			db.doSqlUpdate("insert ignore into specificperson(openid,access_token)VALUES(opid,acstk);"
+					.replace("opid", openid).replace("acstk", access_token));
+		} catch (SQLException e) {
+		}
 	}
-	public void SUUpdate(String field,String value){//Êı¾İ¸üĞÂ
+
+	public void SUUpdate(String field, String value) {// æ•°æ®æ›´æ–°
 		JDBC4wechat db;
 		try {
 			db = new JDBC4wechat();
-			db.doSqlUpdate("update specificperson set field=value where openid=opid".replace("opid", openid).replace("field", field).replace("value", value));
-		} catch (SQLException e) {}
-		
+			db.doSqlUpdate("update specificperson set field=value where openid=opid"
+					.replace("opid", openid).replace("field", field)
+					.replace("value", value));
+		} catch (SQLException e) {
+		}
+
 	}
 }

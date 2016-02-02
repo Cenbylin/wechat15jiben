@@ -1,4 +1,5 @@
 package cn.cenbylin.tool;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
@@ -7,38 +8,39 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+
 public class ReadJsonDemo {
-    public static void read(){
-        try {  
-            //ÐÂ½¨Json½âÎöÆ÷  
-            JsonParser parser = new JsonParser();  
-            //µ÷ÓÃparse·½·¨»ñÈ¡µ½JsonObject  
-            JsonObject object = (JsonObject) parser.parse(new FileReader("example.json"));  
-              
-            //µ÷ÓÃÒ»ÏµÁÐget·½·¨»ñÈ¡objectµÄÖ±½Ó×Ó¶ÔÏó  
-            System.out.println("type:"+object.get("type").getAsString());  
-            System.out.println("mark:"+object.get("mark").getAsBoolean());  
-              
-            //ÐÂ½¨JsonÊý×é»ñÈ¡objectµÄÖ±½Ó×ÓÊý×é  
-            JsonArray array = object.get("Data").getAsJsonArray();  
-            System.out.println("Data:");  
-            //±éÀúJsonÊý×é  
-            for(int i=0;i<array.size();i++)  
-            {  
-                //Ê¹ÓÃJsonObject»ñÈ¡µ½Êý×éµÄÔªËØ  
-                JsonObject temp = (JsonObject) array.get(i);  
-                System.out.print(temp.get("city").getAsString()+" ");  
-                System.out.print(temp.get("weather").getAsString()+" ");  
-                System.out.println(temp.get("temperature").getAsInt());  
-            }  
-              
-        } catch (JsonIOException e1) {  
-            e1.printStackTrace();  
-        } catch (JsonSyntaxException e11) {  
-            e11.printStackTrace();  
-        } catch (FileNotFoundException e) {  
-            e.printStackTrace();  
-        }  
-      
-	   }
+	public static void read() {
+		try {
+			// æ–°å»ºJsonè§£æžå™¨
+			JsonParser parser = new JsonParser();
+			// è°ƒç”¨parseæ–¹æ³•èŽ·å–åˆ°JsonObject
+			JsonObject object = (JsonObject) parser.parse(new FileReader(
+					"example.json"));
+
+			// è°ƒç”¨ä¸€ç³»åˆ—getæ–¹æ³•èŽ·å–objectçš„ç›´æŽ¥å­å¯¹è±¡
+			System.out.println("type:" + object.get("type").getAsString());
+			System.out.println("mark:" + object.get("mark").getAsBoolean());
+
+			// æ–°å»ºJsonæ•°ç»„èŽ·å–objectçš„ç›´æŽ¥å­æ•°ç»„
+			JsonArray array = object.get("Data").getAsJsonArray();
+			System.out.println("Data:");
+			// éåŽ†Jsonæ•°ç»„
+			for (int i = 0; i < array.size(); i++) {
+				// ä½¿ç”¨JsonObjectèŽ·å–åˆ°æ•°ç»„çš„å…ƒç´ 
+				JsonObject temp = (JsonObject) array.get(i);
+				System.out.print(temp.get("city").getAsString() + " ");
+				System.out.print(temp.get("weather").getAsString() + " ");
+				System.out.println(temp.get("temperature").getAsInt());
+			}
+
+		} catch (JsonIOException e1) {
+			e1.printStackTrace();
+		} catch (JsonSyntaxException e11) {
+			e11.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
 }
