@@ -5,7 +5,11 @@ import java.sql.SQLException;
 import cn.cenbylin.jdbc.JDBC4wechat;
 import cn.cenbylin.tool.HttpRequestTool;
 import com.google.gson.*;
-
+/**
+此类是对微信访问用户的封装，一旦初始化，各种信息将会读取，并更新数据库。
+@author Cenbylin
+@version 1.0
+*/
 public class SpecificUser {
 	private final String inforurl = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
 	private String access_token = null;
