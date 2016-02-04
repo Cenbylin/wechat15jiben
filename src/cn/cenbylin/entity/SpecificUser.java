@@ -1,11 +1,12 @@
 package cn.cenbylin.entity;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import cn.cenbylin.jdbc.JDBC4wechat;
 import cn.cenbylin.tool.HttpRequestTool;
-import com.google.gson.*;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * 此类是对微信访问用户的封装，一旦初始化，各种信息将会读取，并更新数据库。

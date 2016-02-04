@@ -8,6 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 
 <%
+	
 	//获得授权后回调code
 	String code=request.getParameter("code");
 	out.print("code:"+code);

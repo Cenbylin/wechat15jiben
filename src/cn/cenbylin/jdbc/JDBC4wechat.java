@@ -1,6 +1,5 @@
 package cn.cenbylin.jdbc;
 
-import java.lang.Class;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,23 +10,23 @@ public class JDBC4wechat {
 	private static final String url = "jdbc:mysql://localhost:3306/wechat?useUnicode=true&characterEncoding=utf8";
 	private static final String username = "root";
 	private static final String password = "037037037";
-	java.sql.Connection conn = null;// Ã¿¸ö¶ÔÏóµÄÊý¾Ý¿âÁ´½Ó
+	java.sql.Connection conn = null;// Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	public JDBC4wechat() throws SQLException {
-		// ¼ÓÔØÇý¶¯
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		try {
 			Class.forName(className);
-			System.out.println("1¡¢¼ÓÔØ³É¹¦");
+			System.out.println("1ï¿½ï¿½ï¿½ï¿½ï¿½Ø³É¹ï¿½");
 		} catch (ClassNotFoundException e) {
-			System.out.println("ÕÒ²»µ½Çý¶¯³ÌÐòÀà £¬¼ÓÔØÇý¶¯Ê§°Ü£¡");
+			System.out.println("ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½");
 			e.printStackTrace();
 		}
-		// Á¬½ÓÊý¾Ý¿â
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½
 		try {
 			conn = DriverManager.getConnection(url, username, password);
-			System.out.println("2¡¢Á¬½Ó³É¹¦");
+			System.out.println("2ï¿½ï¿½ï¿½ï¿½ï¿½Ó³É¹ï¿½");
 		} catch (SQLException se) {
-			System.out.println("Êý¾Ý¿âÁ¬½ÓÊ§°Ü£¡");
+			System.out.println("ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½");
 			se.printStackTrace();
 		}
 	}
@@ -37,10 +36,10 @@ public class JDBC4wechat {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
-			System.out.println("3¡¢Ö´ÐÐsqlÓï¾ä");
+			System.out.println("3ï¿½ï¿½Ö´ï¿½ï¿½sqlï¿½ï¿½ï¿½");
 			rs = stmt.executeQuery(sql);
-			System.out.println("3.1¡¢Ö´ÐÐsqlÓï¾ä");
-			// rs.getString("id");//½á¹û¼¯²Ù×÷
+			System.out.println("3.1ï¿½ï¿½Ö´ï¿½ï¿½sqlï¿½ï¿½ï¿½");
+			// rs.getString("id");//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -56,9 +55,9 @@ public class JDBC4wechat {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
-			System.out.println("3¡¢Ö´ÐÐsqlÓï¾ä");
+			System.out.println("3ï¿½ï¿½Ö´ï¿½ï¿½sqlï¿½ï¿½ï¿½");
 			rs = stmt.executeUpdate(sql);
-			System.out.println("3.1¡¢Ö´ÐÐsqlÓï¾ä");
+			System.out.println("3.1ï¿½ï¿½Ö´ï¿½ï¿½sqlï¿½ï¿½ï¿½");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
