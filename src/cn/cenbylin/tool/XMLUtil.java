@@ -44,6 +44,7 @@ public class XMLUtil {
 	 */
 	public static String BeanToXml(Object javabean){
 		XStream xstream = new XStream();
+		xstream.alias("xml", javabean.getClass());
 		return xstream.toXML(javabean);
 	}
 }
