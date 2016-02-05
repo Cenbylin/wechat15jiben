@@ -11,6 +11,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import cn.cenbylin.po.MessageBean;
 /**
@@ -43,7 +44,8 @@ public class XMLUtil {
 	 * @return
 	 */
 	public static String BeanToXml(Object javabean){
-		XStream xstream = new XStream();
+		XStream xstream = new XStream(new DomDriver("UTF-8"));
+
 		xstream.alias("xml", javabean.getClass());
 		return xstream.toXML(javabean);
 	}

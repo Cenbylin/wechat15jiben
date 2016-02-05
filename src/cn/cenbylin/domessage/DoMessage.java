@@ -46,10 +46,11 @@ public class DoMessage extends HttpServlet {
 		//判断消息类型，分发
 		if("text".equals(MSB.getMsgType())){
 			//分发给文本消息处理器
-			out.print(cn.cenbylin.domessage.DoText.dotext(MSB));
+			out.print(cn.cenbylin.domessage.DoText.doText(MSB));
 			out.close();
-		}else if("image1".equals(MSB.getMsgType())){
-			
+		}else if("image".equals(MSB.getMsgType())){
+			out.print(cn.cenbylin.domessage.DoImage.doImage(MSB));
+			out.close();
 			
 		}else if("text".equals(MSB.getMsgType())){
 			
