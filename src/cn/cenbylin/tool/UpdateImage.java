@@ -17,10 +17,7 @@ public class UpdateImage {
 	 * 返回media_id
 	 */
 	public static void main(String[] args){
-		//System.out.println(cn.cenbylin.tool.HttpRequestTool.sendGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx2e7d71280147d5a5&secret=bb54272fc561876a7c4f82d347f9c584", "utf-8"));
-		String at = "K0ocSCDBXj0pBkmC-LJWuIJPrRrf8or3hmIN0TImM9EzMxzWpImericFr6zh8hXEyAgy-kY93x7anWLwOEzKkcAh2wvtkoiGD-C9MCgrFBpeWE9beVdQ6a45EG0otkbqWUBdAAACAH";
-		String uri = "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png";
-		uploadImage(at,uri);
+		
 	}
 	public static String uploadImage(String accessToken, String mediaUrl) {
 		String uploadMediaUrl = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token="+accessToken+"&type=image";

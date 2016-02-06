@@ -39,7 +39,7 @@ public class DoImage {
 			//消息类型
 			msb.setMsgType("text");
 			//消息内容
-			msb.setContent("再来几张呗~\n\n回复‘不发了’结束");
+			msb.setContent("再来几张"+towho+"的照片呗~\n\n回复‘不发了’结束");
 			//消息创建时间
 			msb.setCreateTime(Long.toString(new Date().getTime()));
 			
