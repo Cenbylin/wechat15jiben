@@ -1,5 +1,5 @@
 package cn.cenbylin.domessage;
-
+import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -34,7 +34,7 @@ public class DoMessage extends HttpServlet {
 		response.setContentType("text/xml;charset=utf-8");
 		request.setCharacterEncoding("utf-8");
 		PrintWriter out = response.getWriter();
-
+		//初始化消息模型，装载信息
 		MessageBean MSB = new MessageBean();
 		Map<String,String> map = null;
 		try {
@@ -42,20 +42,22 @@ public class DoMessage extends HttpServlet {
 		} catch (DocumentException e) {e.printStackTrace();}
 		MSB.loadMap(map);
 		
-		
+		Logger logger = Logger.getLogger(DoMessage.class); 
 		//判断消息类型，分发
 		if("text".equals(MSB.getMsgType())){
 			//分发给文本消息处理器
+	        logger.info("收到来自"+MSB.getFromUserName()+"的文本消息："+MSB.getContent());  
 			out.print(cn.cenbylin.domessage.DoText.doText(MSB));
 			out.close();
 		}else if("image".equals(MSB.getMsgType())){
+			logger.info("收到来自"+MSB.getFromUserName()+"的图片");
 			out.print(cn.cenbylin.domessage.DoImage.doImage(MSB));
 			out.close();
-			
 		}else if("text".equals(MSB.getMsgType())){
 			
 			
 		}else{//未能识别
+			logger.info("收到来自"+MSB.getFromUserName()+"的未知消息类型");
 			out.print("<xml><ToUserName>"+MSB.getFromUserName()+"</ToUserName><FromUserName>"+MSB.getToUserName()+"</FromUserName><CreateTime>"+Long.toString(new Date().getTime())+"</CreateTime><MsgType>text</MsgType><Content>未能识别的消息~</Content><MsgId>"+MSB.getMsgId()+"</MsgId></xml>");
 			out.close();
 		}

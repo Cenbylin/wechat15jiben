@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 /**
  * 实例化本类，需要记住的是使用完之后执行close方法关闭数据库连接。
- * 本类的查询结果必须一次用完才能继续别的查询。
+ * 
  * @author Cenby7
  *
  */
@@ -45,8 +45,8 @@ public class JDBC4wechat {
 			System.out.println("3、处理sql语句");
 			rs = stmt.executeQuery(sql);
 			System.out.println("3.1、处理sql完成");
-			rs.next();
-			System.out.println(rs.getString("picstatement"));//结果集操作
+			//rs.next();
+			//System.out.println(rs.getString("picstatement"));//结果集操作
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
