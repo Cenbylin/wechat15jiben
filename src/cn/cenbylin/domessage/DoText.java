@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,13 +89,14 @@ public class DoText {
 					Auth auth = Auth.create(InnerInfo.getAccessKey(),
 							InnerInfo.getSecretKey());
 					BucketManager bucketManager = new BucketManager(auth);
-					BucketManager.FileListIterator it = bucketManager.createFileListIterator("image", towho, 1, null);
+					BucketManager.FileListIterator it = bucketManager.createFileListIterator("image", towho, 100, null);
 					if (it.hasNext()) {// 有这个人的图
 						FileInfo[] items = it.next();
 						if (items.length > 0) {
 							String url;
+							Random rand = new Random();//随机种子
 							try {
-								url = "http://7xqqi6.com1.z0.glb.clouddn.com/" + java.net.URLEncoder.encode(items[0].key, "UTF-8");
+								url = "http://7xqqi6.com1.z0.glb.clouddn.com/" + java.net.URLEncoder.encode(items[rand.nextInt(items.length)].key, "UTF-8");
 								String mediaid = UpdateImage.uploadImage(InnerInfo.getAccessToken(), url);
 								// System.out.println("获取到啦"+mediaid);
 								msb.setMsgType("image");
@@ -102,10 +104,7 @@ public class DoText {
 								msb.setContent(null);
 								msb.setMsgId(null);
 								logger.info("已发送给" + msb.getFromUserName() + "一张 " + towho + " 的照片");
-							} catch (UnsupportedEncodingException e) {
-								e.printStackTrace();
-							}
-
+							} catch (UnsupportedEncodingException e) {e.printStackTrace();}
 						}
 					} else {
 						msb.setContent("没有" + towho + "的图耶，你有没有呐~");

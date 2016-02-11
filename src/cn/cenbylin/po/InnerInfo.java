@@ -16,6 +16,7 @@ public class InnerInfo {
 	// 七牛
 	private static String accessKey = "2hCizo1I0UNtRUMkr7Lztw18PO3cT48IjayfmDo9";
 	private static String secretKey = "a7qMw76FvqcgG8zEEHplzNxbr6uS9SnX6i4d1Ycq";
+	private static int Iterator = 100;//列举迭代器迭代大小
 	static {
 		String json = cn.cenbylin.tool.HttpRequestTool.sendGet(
 				"https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="

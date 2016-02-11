@@ -7,6 +7,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import cn.cenbylin.jdbc.JDBC4wechat;
+import cn.cenbylin.po.InnerInfo;
 import cn.cenbylin.po.MessageBean;
 import cn.cenbylin.tool.XMLUtil;
 
@@ -39,8 +40,8 @@ public class DoImage {
 		if (statement == 1) {
 			logger.info(msb.getFromUserName() + "在给 " + towho + " 传照片");
 			// 抓取照片
-			Auth me = Auth.create("2hCizo1I0UNtRUMkr7Lztw18PO3cT48IjayfmDo9",
-					"a7qMw76FvqcgG8zEEHplzNxbr6uS9SnX6i4d1Ycq");
+			Auth me = Auth.create(InnerInfo.getAccessKey(),
+					InnerInfo.getSecretKey());
 			BucketManager bucketManager = new BucketManager(me);
 			bucketManager.fetch(msb.getPicUrl(), "image",
 					towho + "_" + Long.toString(new Date().getTime()));
