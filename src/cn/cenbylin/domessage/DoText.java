@@ -1,10 +1,15 @@
 package cn.cenbylin.domessage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,6 +18,7 @@ import org.apache.log4j.Logger;
 import cn.cenbylin.jdbc.JDBC4wechat;
 import cn.cenbylin.po.InnerInfo;
 import cn.cenbylin.po.MessageBean;
+import cn.cenbylin.po.MsgExpression;
 import cn.cenbylin.tool.UpdateImage;
 import cn.cenbylin.tool.XMLUtil;
 
@@ -89,7 +95,7 @@ public class DoText {
 					Auth auth = Auth.create(InnerInfo.getAccessKey(),
 							InnerInfo.getSecretKey());
 					BucketManager bucketManager = new BucketManager(auth);
-					BucketManager.FileListIterator it = bucketManager.createFileListIterator("image", towho, 100, null);
+					BucketManager.FileListIterator it = bucketManager.createFileListIterator("image", towho, InnerInfo.getIterator(), null);
 					if (it.hasNext()) {// 有这个人的图
 						FileInfo[] items = it.next();
 						if (items.length > 0) {
@@ -116,8 +122,14 @@ public class DoText {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		} else if (true) {
-
+		} else {//普通聊天接口
+			Properties prop = MsgExpression.getProp();
+			Set<String> list = prop.stringPropertyNames();//返回正则列表
+			for(String e:list){
+				if(msg.matches(e)){
+					msb.setContent(prop.getProperty(e));
+				}
+			}
 		}
 
 		// 消息创建时间
