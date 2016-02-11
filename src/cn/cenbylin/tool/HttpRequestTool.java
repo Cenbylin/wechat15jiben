@@ -131,6 +131,7 @@ public class HttpRequestTool {
 	 * @param charset
 	 *            编码方式
 	 */
+	@SuppressWarnings("deprecation")
 	public static String sendPost(String url, Map<String, String> param,
 			String charset) {
 

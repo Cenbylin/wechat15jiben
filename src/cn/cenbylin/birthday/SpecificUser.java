@@ -1,4 +1,4 @@
-package cn.cenbylin.entity;
+package cn.cenbylin.birthday;
 
 import java.sql.SQLException;
 

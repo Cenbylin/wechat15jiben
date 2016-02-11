@@ -1,28 +1,28 @@
 package com.qiniu.common;
 
-import com.qiniu.http.Response;
-
 import java.io.IOException;
 
+import com.qiniu.http.Response;
 
 public class QiniuException extends IOException {
-    public final Response response;
 
+	private static final long serialVersionUID = -3941706552813708193L;
+	public final Response response;
 
-    public QiniuException(Response response) {
-        this.response = response;
-    }
+	public QiniuException(Response response) {
+		this.response = response;
+	}
 
-    public QiniuException(Exception e) {
-        super(e);
-        this.response = null;
-    }
+	public QiniuException(Exception e) {
+		super(e);
+		this.response = null;
+	}
 
-    public String url() {
-        return response.url();
-    }
+	public String url() {
+		return response.url();
+	}
 
-    public int code() {
-        return response == null ? -1 : response.statusCode;
-    }
+	public int code() {
+		return response == null ? -1 : response.statusCode;
+	}
 }
