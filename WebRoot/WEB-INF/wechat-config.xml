@@ -3,8 +3,8 @@
 <xml-body>
 	<!-- 微信公众平台的授权接口 -->
 	<wechat>
-		<appID>wx2e7d71280147d5a5</appID>
-		<appSecret>bb54272fc561876a7c4f82d347f9c584</appSecret>
+		<appID>wx8c55fce7826fb05e</appID>
+		<appSecret>888c529334f7b0f02758f0c310f5b8ae</appSecret>
 	</wechat>
 
 	<!-- 七牛云存储的相关配置，主要用于放置图片 -->

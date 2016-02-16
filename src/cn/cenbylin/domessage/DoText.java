@@ -119,6 +119,31 @@ public class DoText {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}else if((msg+"666").matches("我是(.*?)666")){
+			Pattern pattern = Pattern.compile("我是(.*?)666");
+			Matcher matcher = pattern.matcher((msg+"666"));
+			matcher.find();
+			String iam = matcher.group(1);
+			JDBC4wechat jdbc;
+			try {
+				jdbc = new JDBC4wechat();
+				ResultSet rs = jdbc.doSqlQuery("select * FROM person WHERE `name`= \"" + iam + "\" OR `alias`=\"" + iam + "\";");
+				if (rs.next()) {// 找到这个人了
+					iam = rs.getString("name");
+					if(rs.getString("wc_openid")==null||rs.getString("wc_openid").equals("")){
+						jdbc.doSqlUpdate("update person set wc_openid='"+openid+"' where name='" + iam + "';");
+						jdbc.close();
+						msb.setContent("哟西 绑定成功");
+					}else{
+						msb.setContent(iam+"已经绑定过微信号了，如果不是本人绑定的，\n联系成哥/:wipe");
+					}
+					
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
 		} else {//普通聊天接口
 			Properties prop = MsgExpression.getProp();
 			Set<String> list = prop.stringPropertyNames();//返回正则列表
