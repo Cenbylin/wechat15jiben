@@ -135,7 +135,8 @@ public class DoText {
 						jdbc.close();
 						msb.setContent("哟西 绑定成功");
 					}else{
-						msb.setContent(iam+"已经绑定过微信号了，如果不是本人绑定的，\n联系成哥/:wipe");
+						
+						msb.setContent(iam+"已经绑定过微信号了，如果不是本人绑定的，\n联系成哥/:wipe"+"<a href=\"http://www.baidu.com\">百度</a>");
 					}
 					
 				}
