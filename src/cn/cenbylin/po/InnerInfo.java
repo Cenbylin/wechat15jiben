@@ -92,9 +92,10 @@ public class InnerInfo {
 		Map<String, String> map = new HashMap<String, String>();
 		SAXReader reader = new SAXReader();
 		try {
-				String path = InnerInfo.class.getResource("").toString().replace("classes/cn/cenbylin/po/", "").replace("file:/", "")+"wechat-config.xml";
-				path = java.net.URLDecoder.decode(path,"utf-8");//解决空格被%20代替的问题
-				InputStream xmlStream = new FileInputStream(path);
+				//String path = InnerInfo.class.getResource("").toString().replace("classes/cn/cenbylin/po/", "").replace("file:/", "")+"wechat-config.xml";
+				//path = java.net.URLDecoder.decode(path,"utf-8");//解决空格被%20代替的问题
+				//InputStream xmlStream = new FileInputStream(path);
+				InputStream xmlStream = InnerInfo.class.getClassLoader().getResourceAsStream("wechat-config.xml");
 				Document doc = reader.read(xmlStream);	
 				xmlStream.close();
 				root = doc.getRootElement();

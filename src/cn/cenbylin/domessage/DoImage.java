@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-import cn.cenbylin.jdbc.JDBC4wechat;
+import cn.cenbylin.dao.JDBC4wechat;
 import cn.cenbylin.po.InnerInfo;
 import cn.cenbylin.po.MessageBean;
 import cn.cenbylin.tool.XMLUtil;

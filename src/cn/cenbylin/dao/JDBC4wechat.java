@@ -1,4 +1,4 @@
-package cn.cenbylin.jdbc;
+package cn.cenbylin.dao;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;

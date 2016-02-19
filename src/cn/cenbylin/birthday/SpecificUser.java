@@ -2,7 +2,7 @@ package cn.cenbylin.birthday;
 
 import java.sql.SQLException;
 
-import cn.cenbylin.jdbc.JDBC4wechat;
+import cn.cenbylin.dao.JDBC4wechat;
 import cn.cenbylin.tool.HttpRequestTool;
 
 import com.google.gson.JsonObject;
