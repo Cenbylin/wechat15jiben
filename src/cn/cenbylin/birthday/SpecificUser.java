@@ -1,6 +1,8 @@
 package cn.cenbylin.birthday;
 
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import cn.cenbylin.dao.JDBC4wechat;
 import cn.cenbylin.tool.HttpRequestTool;
@@ -84,23 +86,34 @@ public class SpecificUser {
 	}
 
 	public void DBsynchronism() {// DB同步
+		Connection conn = null;
+		Statement stmt = null;
 		try {
-			JDBC4wechat db = new JDBC4wechat();
+			conn = JDBC4wechat.getConnection();
 			// 如果不存在含该openid的记录，则添加记录
-			db.doSqlUpdate("insert ignore into specificperson(openid,access_token)VALUES(opid,acstk);"
+			stmt = conn.createStatement();
+			stmt.executeUpdate("insert ignore into specificperson(openid,access_token)VALUES(opid,acstk);"
 					.replace("opid", openid).replace("acstk", access_token));
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBC4wechat.release(conn, stmt, null);
 		}
 	}
 
 	public void SUUpdate(String field, String value) {// 数据更新
-		JDBC4wechat db;
+		Connection conn = null;
+		Statement stmt = null;
 		try {
-			db = new JDBC4wechat();
-			db.doSqlUpdate("update specificperson set field=value where openid=opid"
+			conn = JDBC4wechat.getConnection();
+			stmt = conn.createStatement();
+			stmt.executeUpdate("update specificperson set field=value where openid=opid"
 					.replace("opid", openid).replace("field", field)
 					.replace("value", value));
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBC4wechat.release(conn, stmt, null);
 		}
 
 	}

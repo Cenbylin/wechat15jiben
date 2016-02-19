@@ -23,8 +23,6 @@ public class DoMessage extends HttpServlet {
 		super();
 	}
 
-
-	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -60,8 +58,6 @@ public class DoMessage extends HttpServlet {
 			logger.info("收到来自" + MSB.getFromUserName() + "的图片");
 			out.print(cn.cenbylin.domessage.DoImage.doImage(MSB));
 			out.close();
-		} else if ("text".equals(MSB.getMsgType())) {
-
 		} else {// 未能识别
 			logger.info("收到来自" + MSB.getFromUserName() + "的未知消息类型");
 			out.print("<xml><ToUserName>"
@@ -76,7 +72,5 @@ public class DoMessage extends HttpServlet {
 		}
 
 	}
-
-	
 
 }

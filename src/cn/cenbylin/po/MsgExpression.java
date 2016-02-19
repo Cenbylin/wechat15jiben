@@ -13,8 +13,7 @@ import java.util.Properties;
  */
 public class MsgExpression {
 	public static Properties prop = new Properties();
-	static
-	{
+	static{
 		reload();
 	}
 	public static Properties getProp(){
@@ -26,7 +25,10 @@ public class MsgExpression {
 			FileInputStream in = new FileInputStream("D://log/aaaa.properties");
 			Reader reader = new InputStreamReader(in,"UTF-8");
 			prop.load(reader);//地址
-			System.out.println(prop);
-		} catch (FileNotFoundException e1) {} catch (IOException e1) {}
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 }

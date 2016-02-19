@@ -1,17 +1,24 @@
 package cn.cenbylin.dao;
 
-import java.sql.DriverManager;
+import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.BasicDataSourceFactory;
 /**
  * 实例化本类，需要记住的是使用完之后执行close方法关闭数据库连接。
  * 
  * @author Cenby7
  * 
  */
+@SuppressWarnings("static-access")
 public class JDBC4wechat {
+	/*
 	private static final String className = "com.mysql.jdbc.Driver";
 	private static final String url = "jdbc:mysql://localhost:3306/wechat?useUnicode=true&characterEncoding=utf8";
 	private static final String username = "root";
@@ -78,5 +85,51 @@ public class JDBC4wechat {
 		}
 
 	}
+	*/	
+	private static DataSource ds = null;
+	static{
+		try{
+			InputStream in = JDBC4wechat.class.getClassLoader().getResourceAsStream("dbcpconfig.properties");
+			Properties prop = new Properties();
+			prop.load(in);
+			
+			BasicDataSourceFactory factory = new BasicDataSourceFactory();
+			ds = factory.createDataSource(prop);
+		}catch (Exception e) {
+			throw new ExceptionInInitializerError(e);
+		}
+	}
+
+	public static Connection getConnection() throws SQLException{
+		return ds.getConnection();
+	}
+	
+	
+	public static void release(Connection conn,Statement st,ResultSet rs){
+		
+		if(rs!=null){
+			try{
+				rs.close();   //throw new 
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			rs = null;
+		}
+		if(st!=null){
+			try{
+				st.close();
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			st = null;
+		}
+		if(conn!=null){
+			try{
+				conn.close();
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}	
 
 }

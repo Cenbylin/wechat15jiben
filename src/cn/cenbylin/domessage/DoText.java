@@ -1,8 +1,10 @@
 package cn.cenbylin.domessage;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
@@ -46,31 +48,42 @@ public class DoText {
 			matcher.find();
 			String towho = matcher.group(1);
 			logger.info(msb.getFromUserName() + "正在尝试给 " + towho + " 传照片");
+			
+			Connection conn = null;
+			Statement stmt = null;
+			ResultSet rs = null;
 			try {
-				JDBC4wechat jdbc = new JDBC4wechat();
-				ResultSet rs = jdbc
-						.doSqlQuery("select * FROM person WHERE `name`= \"" + towho + "\" OR `alias`=\"" + towho + "\";");
+				conn = JDBC4wechat.getConnection();
+				stmt = conn.createStatement();
+				rs = stmt.executeQuery("select * FROM person WHERE `name`= \"" + towho + "\" OR `alias`=\"" + towho + "\";");
+				
 				if (rs.next()) {// 找到这个人了
 					msb.setContent("那就发来呗~~");
 					towho = rs.getString("name");
-					jdbc.doSqlUpdate("update person set picstatement=1,towho='" + towho + "' where wc_openid='" + openid + "';");
+					stmt.executeUpdate("update person set picstatement=1,towho='" + towho + "' where wc_openid='" + openid + "';");
 				} else {
 					msb.setContent("你确定有" + towho + "这个人吗~~");
 				}
-				jdbc.close();
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
+			}finally{
+				JDBC4wechat.release(conn, stmt, rs);
 			}
 			/**
 			 * 不发了
 			 */
 		} else if (msb.getContent().contains("不发了")) {
+			Connection conn = null;
+			Statement stmt = null;
 			try {
-				JDBC4wechat jdbc = new JDBC4wechat();
-				jdbc.doSqlUpdate("update person set picstatement=0 where wc_openid='" + openid + "';");
-				jdbc.close();
+				conn = JDBC4wechat.getConnection();
+				stmt = conn.createStatement(); 
+				stmt.executeUpdate("update person set picstatement=0 where wc_openid='" + openid + "';");
 			} catch (SQLException e) {
 				e.printStackTrace();
+			} finally{
+				JDBC4wechat.release(conn, stmt, null);
 			}
 			msb.setContent("好吧，下次记得来爆照哦~");
 			/**
@@ -83,9 +96,14 @@ public class DoText {
 			matcher.find();
 			String towho = matcher.group(1);
 			logger.info(msb.getFromUserName() + "正在尝试获取 " + towho + " 的照片");
+			
+			Connection conn = null;
+			Statement stmt = null;
+			ResultSet rs = null;
 			try {
-				JDBC4wechat jdbc = new JDBC4wechat();
-				ResultSet rs = jdbc.doSqlQuery("select * FROM person WHERE `name`= \"" + towho + "\" OR `alias`=\"" + towho + "\";");
+				conn = JDBC4wechat.getConnection();
+				stmt = conn.createStatement();
+				rs = stmt.executeQuery("select * FROM person WHERE `name`= \"" + towho + "\" OR `alias`=\"" + towho + "\";");
 				if (rs.next()) {// 找到这个人了
 					towho = rs.getString("name");
 					// 从库里得到一个url
@@ -115,34 +133,37 @@ public class DoText {
 				} else {
 					msb.setContent("你确定有" + towho + "这个人吗~~");
 				}
-				jdbc.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+			} finally {
+				JDBC4wechat.release(conn, stmt, rs);
 			}
 		}else if((msg+"666").matches("我是(.*?)666")){
 			Pattern pattern = Pattern.compile("我是(.*?)666");
 			Matcher matcher = pattern.matcher((msg+"666"));
 			matcher.find();
 			String iam = matcher.group(1);
-			JDBC4wechat jdbc;
+			
+			Connection conn = null;
+			Statement stmt = null;
+			ResultSet rs = null;
 			try {
-				jdbc = new JDBC4wechat();
-				ResultSet rs = jdbc.doSqlQuery("select * FROM person WHERE `name`= \"" + iam + "\" OR `alias`=\"" + iam + "\";");
+				conn = JDBC4wechat.getConnection();
+				stmt = conn.createStatement();
+				rs = stmt.executeQuery("select * FROM person WHERE `name`= \"" + iam + "\" OR `alias`=\"" + iam + "\";");
 				if (rs.next()) {// 找到这个人了
 					iam = rs.getString("name");
 					if(rs.getString("wc_openid")==null||rs.getString("wc_openid").equals("")){
-						jdbc.doSqlUpdate("update person set wc_openid='"+openid+"' where name='" + iam + "';");
-						jdbc.close();
+						stmt.executeUpdate("update person set wc_openid='"+openid+"' where name='" + iam + "';");
 						msb.setContent("哟西 绑定成功");
 					}else{
-						
 						msb.setContent(iam+"已经绑定过微信号了，如果不是本人绑定的，\n联系成哥/:wipe"+"<a href=\"http://www.baidu.com\">百度</a>");
 					}
-					
 				}
-				
 			} catch (SQLException e) {
 				e.printStackTrace();
+			} finally {
+				JDBC4wechat.release(conn, stmt, rs);
 			}
 			
 		} else {//普通聊天接口

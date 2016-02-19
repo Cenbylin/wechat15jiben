@@ -1,7 +1,9 @@
 package cn.cenbylin.domessage;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -20,20 +22,24 @@ public class DoImage {
 																			// 2、临时消息bean对象可读取返回两用，需要提前采取提取措施
 		String openid = msb.getFromUserName();// 读取Openid
 		// 状态读取
-		JDBC4wechat j1;
-		ResultSet rs;
+		
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		int statement = -1;// 如果处在给别人传照片状态，为1，否则为0
 		String towho = null;
 		try {
-			j1 = new JDBC4wechat();
-			rs = j1.doSqlQuery("select * FROM person WHERE `wc_openid`= \""
+			conn = JDBC4wechat.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select * FROM person WHERE `wc_openid`= \""
 					+ openid + "\";");
-			rs.next();
+			rs.next();//将指向转到第一个
 			statement = rs.getInt("picstatement");
 			towho = rs.getString("towho");
-			j1.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			JDBC4wechat.release(conn, stmt, rs);
 		}
 
 		Logger logger = Logger.getLogger(DoMessage.class);
