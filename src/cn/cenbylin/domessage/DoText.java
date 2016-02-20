@@ -18,7 +18,7 @@ import cn.cenbylin.dao.JDBC4wechat;
 import cn.cenbylin.po.InnerInfo;
 import cn.cenbylin.po.MessageBean;
 import cn.cenbylin.po.MsgExpression;
-import cn.cenbylin.tool.UpdateImage;
+import cn.cenbylin.tool.SentImgToWechat;
 import cn.cenbylin.tool.XMLUtil;
 
 import com.qiniu.storage.BucketManager;
@@ -26,8 +26,10 @@ import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
 
 public class DoText {
+	static Random rand = new Random();//随机种子
 	public static String doText(MessageBean msb) {// 1、高拓展性
 												  // 2、临时消息bean对象可读取返回两用，需要提前采取提取措施
+		
 		Logger logger = Logger.getLogger(DoMessage.class);
 		String openid = msb.getFromUserName();// 读取Openid
 		// 消息类型
@@ -115,17 +117,17 @@ public class DoText {
 						FileInfo[] items = it.next();
 						if (items.length > 0) {
 							String url;
-							Random rand = new Random();//随机种子
 							try {
 								url = "http://7xqqi6.com1.z0.glb.clouddn.com/" + java.net.URLEncoder.encode(items[rand.nextInt(items.length)].key, "UTF-8");
-								String mediaid = UpdateImage.uploadImage(InnerInfo.getAccessToken(), url);
-								// System.out.println("获取到啦"+mediaid);
-								msb.setMsgType("image");
-								msb.setMediaId(mediaid);
-								msb.setContent(null);
-								msb.setMsgId(null);
 								logger.info("已发送给" + msb.getFromUserName() + "一张 " + towho + " 的照片");
-							} catch (UnsupportedEncodingException e) {e.printStackTrace();}
+								SentImgToWechat SITW = new SentImgToWechat(url,msb.getFromUserName());
+								//异步发送，调用客服接口
+								//启动 上传临时素材并发送 的线程
+								SITW.start();
+								return "success";
+							} catch (UnsupportedEncodingException e) {
+								e.printStackTrace();
+							}
 						}
 					} else {
 						msb.setContent("没有" + towho + "的图耶，你有没有呐~");
@@ -138,6 +140,10 @@ public class DoText {
 			} finally {
 				JDBC4wechat.release(conn, stmt, rs);
 			}
+			
+			/**
+			 * 微信绑定
+			 */
 		}else if((msg+"666").matches("我是(.*?)666")){
 			Pattern pattern = Pattern.compile("我是(.*?)666");
 			Matcher matcher = pattern.matcher((msg+"666"));
@@ -157,7 +163,7 @@ public class DoText {
 						stmt.executeUpdate("update person set wc_openid='"+openid+"' where name='" + iam + "';");
 						msb.setContent("哟西 绑定成功");
 					}else{
-						msb.setContent(iam+"已经绑定过微信号了，如果不是本人绑定的，\n联系成哥/:wipe"+"<a href=\"http://www.baidu.com\">百度</a>");
+						msb.setContent(iam+"已经绑定过微信号了，如果不是本人绑定的，\n联系成哥/:wipe"+"<a href=\"http://www.baidu.com\">点我试试</a>");
 					}
 				}
 			} catch (SQLException e) {
@@ -167,6 +173,7 @@ public class DoText {
 			}
 			
 		} else {//普通聊天接口
+			/*自定义配置
 			Properties prop = MsgExpression.getProp();
 			Set<String> list = prop.stringPropertyNames();//返回正则列表
 			for(String e:list){
@@ -174,6 +181,13 @@ public class DoText {
 					msb.setContent(prop.getProperty(e));
 				}
 			}
+			*/
+			String url = "http://7xqqi6.com1.z0.glb.clouddn.com/" + java.net.URLEncoder.encode(items[rand.nextInt(items.length)].key, "UTF-8");
+			SentImgToWechat SITW = new SentImgToWechat(url,msb.getFromUserName());
+			//异步发送，调用客服接口
+			//启动 上传临时素材并发送 的线程
+			SITW.start();
+			return "success";
 		}
 
 		// 消息创建时间
