@@ -13,6 +13,10 @@
     <url-pattern>/DoMessage</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
+  
+  <listener>
+  	<listener-class>cn.cenbylin.po.Listener</listener-class>
+  </listener>
 </web-app>
