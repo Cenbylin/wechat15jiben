@@ -31,6 +31,8 @@ public class InnerInfo {
 	@SuppressWarnings("unused")
 	private static String bucket = null;
 	private static int Iterator;//列举迭代器迭代大小
+	//图灵
+	private static String tulingKey = null;
 	static {
 		loadConfig();//加载
 		//定时任务线程
@@ -62,7 +64,9 @@ public class InnerInfo {
 	public static String getAccessToken() {
 		return accessToken;
 	}
-
+	public static String getTulingKey() {
+		return tulingKey;
+	}
 	public static String getAppID() {
 		return appID;
 	}
@@ -128,6 +132,13 @@ public class InnerInfo {
 						bucket=e1.getStringValue();
 					}else if(e1.getName().equals("Iterator")){
 						Iterator=Integer.valueOf(e1.getStringValue());
+					}
+				}
+			}else if(e.getName().equals("tuling")){
+				List<Element> list1 = e.elements();
+				for(Element e1 : list1){
+					if(e1.getName().equals("key")){
+						tulingKey = e1.getStringValue();
 					}
 				}
 			}

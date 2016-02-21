@@ -13,5 +13,10 @@
 		<bucket>image</bucket>
 		<Iterator>100</Iterator>
 	</qiniu>
+	
+	<!-- 图灵机器人 -->
+	<tuling>
+		<key>ca343b6b1c5807b5f2924a93e9ebd479</key>
+	</tuling>
 
 </xml-body>

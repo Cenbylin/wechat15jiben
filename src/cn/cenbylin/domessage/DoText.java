@@ -6,9 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
-import java.util.Properties;
 import java.util.Random;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +15,6 @@ import org.apache.log4j.Logger;
 import cn.cenbylin.dao.JDBC4wechat;
 import cn.cenbylin.po.InnerInfo;
 import cn.cenbylin.po.MessageBean;
-import cn.cenbylin.po.MsgExpression;
 import cn.cenbylin.tool.SentImgToWechat;
 import cn.cenbylin.tool.XMLUtil;
 
@@ -182,11 +179,11 @@ public class DoText {
 				}
 			}
 			*/
-			String url = "http://7xqqi6.com1.z0.glb.clouddn.com/" + java.net.URLEncoder.encode(items[rand.nextInt(items.length)].key, "UTF-8");
-			SentImgToWechat SITW = new SentImgToWechat(url,msb.getFromUserName());
+			//String url = "http://7xqqi6.com1.z0.glb.clouddn.com/" + java.net.URLEncoder.encode(items[rand.nextInt(items.length)].key, "UTF-8");
+			MessageRobot MR = new MessageRobot(msb.getContent(),msb.getFromUserName());
 			//异步发送，调用客服接口
-			//启动 上传临时素材并发送 的线程
-			SITW.start();
+			//启动 普通文本消息处理 的线程
+			MR.start();
 			return "success";
 		}
 
