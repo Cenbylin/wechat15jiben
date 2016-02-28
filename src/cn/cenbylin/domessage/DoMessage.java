@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.dom4j.DocumentException;
 
-import cn.cenbylin.po.MessageBean;
+import cn.cenbylin.pojo.MessageBean;
 import cn.cenbylin.tool.XMLUtil;
 
 

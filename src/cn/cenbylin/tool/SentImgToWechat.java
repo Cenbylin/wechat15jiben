@@ -1,6 +1,6 @@
 package cn.cenbylin.tool;
 
-import cn.cenbylin.po.InnerInfo;
+import cn.cenbylin.pojo.InnerInfo;
 
 public class SentImgToWechat extends Thread {
 	private String url = null;

@@ -1,4 +1,4 @@
-package cn.cenbylin.po;
+package cn.cenbylin.pojo;
 
 import java.util.Map;
 

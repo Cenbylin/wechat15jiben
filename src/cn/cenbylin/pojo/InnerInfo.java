@@ -1,4 +1,4 @@
-package cn.cenbylin.po;
+package cn.cenbylin.pojo;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,6 +22,7 @@ import com.google.gson.JsonParser;
  * 
  */
 public class InnerInfo {
+	//微信
 	private static String accessToken = null;
 	private static String appID = null;
 	private static String appSecret = null;
@@ -36,9 +37,9 @@ public class InnerInfo {
 	static {
 		loadConfig();//加载
 		//定时任务线程
-		final long timeInterval = 100000;//时间(毫秒)
 		Runnable runnable = new Runnable() {
 			public void run() {
+				int timeInterval = 7000000;//时间(毫秒)
 				while (true) {
 					String json = cn.cenbylin.tool.HttpRequestTool.sendGet(
 							"https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="
@@ -48,6 +49,7 @@ public class InnerInfo {
 					JsonObject object = (JsonObject) parser.parse(json);
 					// 调用一系列get方法获取object的直接子对象
 					accessToken = object.get("access_token").getAsString();
+					timeInterval = Integer.valueOf(object.get("expires_in").getAsString())*1000-10000;
 					try {
 						Thread.sleep(timeInterval);
 					} catch (InterruptedException e) {

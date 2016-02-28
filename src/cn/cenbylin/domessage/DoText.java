@@ -13,8 +13,9 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import cn.cenbylin.dao.JDBC4wechat;
-import cn.cenbylin.po.InnerInfo;
-import cn.cenbylin.po.MessageBean;
+import cn.cenbylin.pojo.InnerInfo;
+import cn.cenbylin.pojo.MessageBean;
+import cn.cenbylin.pojo.ThreadPool;
 import cn.cenbylin.tool.SentImgToWechat;
 import cn.cenbylin.tool.XMLUtil;
 
@@ -120,7 +121,7 @@ public class DoText {
 								SentImgToWechat SITW = new SentImgToWechat(url,msb.getFromUserName());
 								//异步发送，调用客服接口
 								//启动 上传临时素材并发送 的线程
-								SITW.start();
+								ThreadPool.setFixedThread(SITW);//线程池
 								return "success";
 							} catch (UnsupportedEncodingException e) {
 								e.printStackTrace();
@@ -183,7 +184,7 @@ public class DoText {
 			MessageRobot MR = new MessageRobot(msb.getContent(),msb.getFromUserName());
 			//异步发送，调用客服接口
 			//启动 普通文本消息处理 的线程
-			MR.start();
+			ThreadPool.setCachedThread(MR);
 			return "success";
 		}
 

@@ -9,8 +9,8 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import cn.cenbylin.dao.JDBC4wechat;
-import cn.cenbylin.po.InnerInfo;
-import cn.cenbylin.po.MessageBean;
+import cn.cenbylin.pojo.InnerInfo;
+import cn.cenbylin.pojo.MessageBean;
 import cn.cenbylin.tool.XMLUtil;
 
 import com.qiniu.common.QiniuException;

@@ -6,7 +6,7 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import cn.cenbylin.po.InnerInfo;
+import cn.cenbylin.pojo.InnerInfo;
 import cn.cenbylin.tool.HttpRequestTool;
 
 public class MessageRobot extends Thread {
@@ -33,7 +33,7 @@ public class MessageRobot extends Thread {
 		String sentUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token="+InnerInfo.getAccessToken();
 		String sentJson = "{\"touser\":\"OPENID\",\"msgtype\":\"text\",\"text\":{\"content\":\"CONTENT\"}}";
 		sentJson = sentJson.replace("OPENID", openid).replace("CONTENT", backText);
-		System.out.println(HttpRequestTool.sendPost(sentUrl, sentJson, "utf-8"));
+		HttpRequestTool.sendPost(sentUrl, sentJson, "utf-8");
 	}
 	
 }
